@@ -1,0 +1,28 @@
+# Res: https://hub.docker.com/r/grburst/etesync
+version: '3'
+
+services:
+  etesync:
+    container_name: etesync
+    image: grburst/etesync:alpine
+    restart: always
+    networks:
+      - reverse-proxy
+    expose:
+      - "3735"
+    volumes:
+      - data-etesync:/data
+    environment:
+      SERVER: ${SERVER:-uwsgi}
+      SUPER_USER: ${SUPER_USER:-admin}
+      SUPER_PASS: ${SUPER_PASS:-admin}
+      SECRET_KEY: ${SECRET_KEY:-secret3}
+      PUID: ${MY_UID:-1000}
+      PGID: ${MY_GUID:-1000}
+
+volumes:
+  data-etesync:
+
+networks:
+  reverse-proxy:
+    external: true
